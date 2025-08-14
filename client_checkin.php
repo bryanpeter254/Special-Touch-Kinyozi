@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Client Check-In - Special Touch</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+.content {
+  max-width: 900px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+     .side-nav {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .side-nav.active {
+            transform: translateX(0);
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            margin-top: 60px;
+        }
+
+        .side-nav ul li {
+            margin: 20px 0;
+        }
+
+        .side-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            transition: color 0.3s ease;
+        }
+
+        .side-nav ul li a:hover {
+            color: var(--bs-success);
+        }
+
+        .side-nav ul li a i {
+            margin-right: 10px;
+        }
+
+        .menu-icon {
+            background: none;
+            border: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+        }
+
+        .menu-line {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-icon.active .menu-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .menu-icon.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-icon.active .menu-line:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .main-content {
+            margin-left: 60px;
+            padding: 20px;
+        }
+
+    .container {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #34495e;
+    }
+
+    #message {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    /* Stylish table wrapper */
+.table-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-top: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+thead th {
+  background-color: #333;
+  color: white;
+  text-align: left;
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tbody td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+  background-color: #eef6ff;
+  transition: background-color 0.3s;
+}
+
+  </style>
+</head>
+<body>
+<button class="menu-icon" id="menuToggle">
+        <div class="menu-line"></div>
+        <div class="menu-line"></div>
+        <div class="menu-line"></div>
+    </button>
+
+    <nav class="side-nav" id="sideNav">
+       <ul>
+  <li><a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+  <li><a href="client_checkin.php"><i class="bi bi-person-check"></i> Client Check-In</a></li>
+  <li><a href="expenses.php"><i class="bi bi-cash-coin"></i> Expenses</a></li>
+  <li><a href="revenue.php"><i class="bi bi-graph-up"></i> Revenue</a></li>
+<li><a href="debts.php"><i class="bi bi-credit-card"></i> Debts</a></li>
+  <li><a href="monthly_record.php"><i class="bi bi-journal-text"></i> Monthly Record</a></li>
+  <li><a href="barbers.php"><i class="bi bi-scissors"></i> Barbers Record</a></li>
+ <!--<li><a href="manage_barbers.php"><i class="bi bi-person-gear"></i> Manage Barbers</a></li>-->
+ <li><a href="services.php"><i class="bi bi-briefcase"></i> Services</a></li>
+<!--<li><a href="monthly_record.php"><i class="bi bi-briefcase"></i> Services</a></li>-->
+<li><a href="advances.php"><i class="bi bi-wallet2"></i> Salary Advances</a></li>
+  <li><a href="index.html" class="text-danger"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+</ul>
+    </nav>
+
+  <div class="container">
+    <h2>Client Check-In</h2>
+
+    <hr>
+
+<!-- ✅ Clients Who Visited Today -->
+<h3>👥 Clients Who Visited Today</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Client Name</th>
+      <th>Service</th>
+      <th>Price (KSh)</th>
+      <th>Barber</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    $conn = new mysqli("localhost", "root", "", "barbershop");
+    if ($conn->connect_error) {
+      echo "<tr><td colspan='4'>❌ Connection failed: " . $conn->connect_error . "</td></tr>";
+    } else {
+      $today = date("Y-m-d");
+      $sqlToday = "SELECT client_name, service, price, offered_by 
+                   FROM revenue 
+                   WHERE date = '$today' AND client_name IS NOT NULL";
+      $resultToday = $conn->query($sqlToday);
+
+      if ($resultToday && $resultToday->num_rows > 0) {
+        while ($row = $resultToday->fetch_assoc()) {
+          echo "<tr>
+                  <td>" . htmlspecialchars($row['client_name']) . "</td>
+                  <td>" . htmlspecialchars($row['service']) . "</td>
+                  <td>KSh " . number_format($row['price'], 2) . "</td>
+                  <td>" . htmlspecialchars($row['offered_by']) . "</td>
+                </tr>";
+        }
+      } else {
+        echo "<tr><td colspan='4'>No clients checked in today.</td></tr>";
+      }
+    }
+    ?>
+  </tbody>
+</table>
+
+<br>
+
+<!-- ✅ Clients Who Haven't Visited Recently -->
+<h3>⏳ Clients Who Haven’t Visited Recently</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Client Name</th>
+      <th>Last Visit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    // Group by client and get their latest visit
+    $sqlAbsent = "SELECT client_name, MAX(date) AS last_visit 
+                  FROM revenue 
+                  WHERE client_name IS NOT NULL 
+                  GROUP BY client_name 
+                  ORDER BY last_visit ASC 
+                  LIMIT 10";
+    $resultAbsent = $conn->query($sqlAbsent);
+
+    if ($resultAbsent && $resultAbsent->num_rows > 0) {
+      while ($row = $resultAbsent->fetch_assoc()) {
+        echo "<tr>
+                <td>" . htmlspecialchars($row['client_name']) . "</td>
+                <td>" . htmlspecialchars($row['last_visit']) . "</td>
+              </tr>";
+      }
+    } else {
+      echo "<tr><td colspan='2'>No data found.</td></tr>";
+    }
+
+    $conn->close();
+    ?>
+  </tbody>
+</table>
+
+
+  <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sideNav = document.getElementById('sideNav');
+
+        menuToggle.addEventListener('click', () => {
+            sideNav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        // Close navigation when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sideNav.contains(e.target) && !menuToggle.contains(e.target) && sideNav.classList.contains('active')) {
+                sideNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
